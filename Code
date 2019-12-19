@@ -1,0 +1,42 @@
+# Hyperparameter optimization to identify optimum number of hidden layers
+
+from keras.wrappers.scikit_learn import KerasClassifier
+from sklearn.model_selection import GridSearchCV
+
+def mod_build(layers,activation):
+  model=keras.Sequential()
+  for i,nodes in enumerate(layers):
+    
+    if i == 0:
+      keras.layers.Flatten(input_shape=(28,28))
+      model.add(keras.layers.Dense(nodes))
+      model.add(keras.layers.Activation(activation))
+      keras.layers.Dense(10,activation=tf.nn.softmax)
+    
+    else:
+      model.add(keras.layers.Dense(nodes))
+      model.add(keras.layers.Activation(activation))
+      keras.layers.Dense(10,activation=tf.nn.softmax)
+  model.add(keras.layers.Dense(1))   # No activation beyond this point
+
+  model.compile(optimizer="adam",loss="binary_crossentropy",metrics=["acc"])
+  return model
+
+model=KerasClassifier(build_fn=mod_build,verbose=1)
+
+
+
+
+
+layers=[[128],[128,64,32,16,10],[128,100,75,60,40,20,10]]
+activations=["sigmoid","relu"]
+param_grid=dict(layers=layers,activation=activations,batch_size=[128,256],epochs=[5])
+grid=GridSearchCV(estimator=model,param_grid=param_grid)
+
+
+
+
+
+grid_result=grid.fit(train_images,train_labels)
+
+grid_result."initialize what u want to see"
